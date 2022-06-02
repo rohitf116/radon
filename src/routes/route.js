@@ -1,8 +1,11 @@
 const express = require('express');
 const myHelper = require('../util/helper')
-const underscore = require('underscore')
+const _ = require("lodash");
 
 const router = express.Router();
+
+
+
     //--------------------first Assignment-------------------------------//
 router.get('/movies', function (req, res) {
 
@@ -37,6 +40,8 @@ router.get('/movies/:indexNumber', function (req, res) {
        
     });
 
+    //--------------------fifth Assignment-------------------------------//
+
     router.get('/films/:filmId', function (req, res) {
 
         const film=[ {
@@ -48,16 +53,68 @@ router.get('/movies/:indexNumber', function (req, res) {
            }, {
             id:4,name:'Finding Nemo'
            }]
-           console.log(req.params.filmId)
-        const num=req.params.filmId
+        const num=Number(req.params.filmId)-1
         
-
-        res.send(film[num].name)
+        req.params.filmId > film.length || req.params.filmId<0  ?res.send('No movie exists with this id'):res.send(film[num].name)
+        
        
     });
 
+   
+
+     //--------------------sixth Assignment-------------------------------//
+
+     router.get('/sol1', function (req, res) {
+        const valueOfFirstSeven=7*(7+1)/2
+
+        const sumOfArray = [1, 2, 3,5,6,7].reduce((partialSum, a) => partialSum + a, 0)
+        const missingNumber =valueOfFirstSeven-sumOfArray
+        console.log(missingNumber)
+        res.send(`${missingNumber}`)
+       
+    });
+
+    //--------------------seven Assignment-------------------------------//
+
+    router.get('/sol2', function (req, res) {
+        const valueOfNumber=(6*(33+38)/2)
+        const arr=[33,34,35,37,38]
+        const sumOfArray=arr.reduce((acc,el)=>acc+el,0)
+        const missingNumber=valueOfNumber-sumOfArray
+        res.send(`${missingNumber}`)
+       
+    });
+
+    //--------------------day1 assignment 4-------------------------------//
+
+    router.get('/hello', function (req, res) {
+        const montOfYear=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        const quarter=_.chunk(montOfYear, 4)
+        console.log(`-----------4 assignment----------------`)
+        console.log(quarter)
+        const collectionOfOdd=[1,3,5,7,9,11,13,15,17,19]
+        const allButFirst=_.tail(collectionOfOdd)
+        console.log(allButFirst)
+        console.log(`-----------5 assignment----------------`)
+        const firstArr=[1,2,3]
+        const secondfirstArr=[3,4,5]
+        const thirdArr=[4,5,6]
+        const fourthArr=[6,7,8]
+        const fiveArr=[7,8,9]
+        const unionOfArr=_.union(firstArr,secondfirstArr,thirdArr,fourthArr,fiveArr)
+        console.log(unionOfArr)
+        console.log(`-----------6 assignment----------------`)
+        const categoryOfMovies=_.fromPairs([ ['horror','The Shining'],['drama','Titanic'],['thriller','Shutter Island'],['fantasy','Pans Labyrinth']])
+        console.log(categoryOfMovies)
+        res.send()
+       
+    });
+    
+    
+    
 
 
+    
 
 router.get('/test-me', function (req, res) {
     myHelper.printDate()
