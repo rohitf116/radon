@@ -7,13 +7,9 @@ router.get("/test-me", function (req, res) {
   res.send("My first ever api!");
 });
 
+router.post("/createAuthor", BookController.createAuthor);
 router.post("/createBook", BookController.createBook);
-
-router.get("/getBooksData", BookController.getBooksData);
-router.get("/bookList", BookController.bookList);
-router.get("/getBooksInYear", BookController.getBooksInYear);
-router.get("/getXINRBooks", BookController.getXINRBooks);
-router.get("/getRandomBooks", BookController.getRandomBooks);
-router.get("/getParticularBooks", BookController.getParticularBooks);
-
+router.get("/chetan", BookController.chetan);
+router.get("/authorOfTwoStates", BookController.authorOfTwoStates);
+router.get("/findBook", BookController.findBook);
 module.exports = router;
