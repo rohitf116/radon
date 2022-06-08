@@ -1,4 +1,4 @@
-const { count } = require("console");
+const { count, Console } = require("console");
 const BookModel = require("../models/bookModel");
 const AuthorModel = require("../models/authorModel");
 const { set } = require("mongoose");
@@ -20,10 +20,11 @@ const createBook = async function (req, res) {
 };
 // -------------------------------3
 const chetan = async function (req, res) {
-  const idAuthor = await AuthorModel.find({ author_name: "Chetan Bhagat" });
-  const [curId] = idAuthor.map((ele) => ele.author_id);
-  console.log(curId);
-  const allBooks = await BookModel.find({ author_id: curId });
+  const idAuthor = await AuthorModel.find({
+    author_name: "Chetan Bhagat",
+  }).select({ author_id: 1, _id: 0 });
+  console.log(idAuthor);
+  const allBooks = await BookModel.find(...idAuthor);
   res.send({ allBooks });
 };
 // -------------------------------4
@@ -32,11 +33,19 @@ const authorOfTwoStates = async function (req, res) {
     { name: "Two states" },
     { $set: { price: 100 } },
     { new: true }
-  );
-  const curId = neededbook.author_id;
-  const authorOfThisBook = await AuthorModel.find({ author_id: curId });
-  const priceNew = neededbook.price;
-  res.send({ authorOfThisBook, priceNew });
+  ); //.select({ author_id: 1, _id: 0 });
+  price = neededbook.price;
+  const auId = neededbook.author_id;
+  console.log(neededbook.price);
+  const CurrentAutho = await AuthorModel.find({ author_id: auId }).select({
+    author_name: 1,
+    _id: 0,
+  });
+  const [authorName] = [...CurrentAutho];
+
+  console.log("hi", CurrentAutho);
+  console.log(price);
+  res.send({ authorName, price });
 };
 
 // -------------------------------5
