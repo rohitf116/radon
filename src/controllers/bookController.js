@@ -2,6 +2,7 @@ const { count, Console } = require("console");
 const BookModel = require("../models/bookModel");
 const AuthorModel = require("../models/authorModel");
 const { set } = require("mongoose");
+const bookModel = require("../models/bookModel");
 
 // -------------------------------1
 const createAuthor = async function (req, res) {
@@ -67,8 +68,46 @@ const findBook = async function (req, res) {
   console.log(final);
   res.send({ final });
 };
+//---------------------------------------6
+const fifty = async function (req, res) {
+  const temp = await AuthorModel.find({ age: { $gt: 50 } }).select({
+    author_id: 1,
+    _id: 0,
+  });
+  const ids = temp.map((ele) => ele.author_id);
+  console.log(ids);
+  const newbooks = await BookModel.find({
+    author_id: { $in: ids },
+    rating: { $gt: 4 },
+  }).select({ author_id: 1, _id: 0 });
+  console.log(newbooks);
+  const nono = newbooks.map((ele) => ele.author_id);
+  console.log(nono);
+  const uniq = [...new Set(nono)];
+  console.log(uniq);
+  const auName = await AuthorModel.find({ author_id: { $in: uniq } }).select({
+    author_name: 1,
+    _id: 0,
+  });
+  console.log(auName);
+
+  res.send(auName);
+};
+
+//---------------------------------------7
+const zero = async function (req, res) {
+  const id = req.params.id;
+  const temp = await BookModel.find({ author_id: id }).select({
+    name: 1,
+    _id: 0,
+  });
+
+  res.send(temp);
+};
 module.exports.createAuthor = createAuthor;
 module.exports.createBook = createBook;
 module.exports.chetan = chetan;
 module.exports.authorOfTwoStates = authorOfTwoStates;
 module.exports.findBook = findBook;
+module.exports.fifty = fifty;
+module.exports.zero = zero;
