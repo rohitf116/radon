@@ -23,6 +23,6 @@ router.get(
   bookController.getBooksWithAuthorDetails
 );
 
-// router.put("/updatedBook", bookController.updatedBook);
+router.put("/updatedBook", bookController.updatedBook);
 
 module.exports = router;

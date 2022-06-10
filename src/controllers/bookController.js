@@ -47,19 +47,29 @@ const getBooksWithAuthorDetails = async function (req, res) {
   res.send({ data: specificBook });
 };
 
-// const updatedBook = async function (req, res) {
-//   const checkId = await publisherModel
-//     .find({ name: { $in: ["Penguin", "HarperCollins"] } })
-//     .select("_id");
-//   const check0 = await publisherModel.find().select("_id");
-//   //   console.log(checkId);
-//   console.log(check0);
-//   const upFalse = await bookModel.updateMany({
-//     publisher[id]: { $in: check0 },
-//   });
+const updatedBook = async function (req, res) {
+  const checkId = await publisherModel
+    .find({ name: { $in: ["Penguin", "HarperCollins"] } })
+    .select("_id");
+  const check0 = await publisherModel.find().select("_id");
+  console.log(checkId);
+  console.log(check0);
+  const upFalse = await bookModel.updateMany(
+    {
+      publisher: { $nin: checkId },
+    },
+    { $set: { isHardCover: false } }
+  );
+  const upTrue = await bookModel.updateMany(
+    {
+      publisher: { $in: checkId },
+    },
+    { $set: { isHardCover: true } }
+  );
+  const upbooks = await bookModel.find();
 
-//   res.send("Hello");
-// };
+  res.send({ upbooks });
+};
 //   const oldDat = req.body.isHardCover
 //   const data = await bookModel.updateMany(
 //     { $set: { isHardCover: true } },
@@ -71,4 +81,4 @@ const getBooksWithAuthorDetails = async function (req, res) {
 module.exports.createBook = createBook;
 module.exports.getBooksData = getBooksData;
 module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails;
-// module.exports.updatedBook = updatedBook;
+module.exports.updatedBook = updatedBook;
