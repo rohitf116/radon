@@ -1,26 +1,30 @@
+const userModel = require("../models/userModel");
 
-const mid1= function ( req, res, next) {
-    req.falana= "hi there. i am adding something new to the req object"
-    console.log("Hi I am a middleware named Mid1")
-    next()
-}
+exports.checkIsFreeAppUser = (req, res, next) => {
+  const hed = req.headers["isfreeappuser"];
+  req.header("isfree", "false");
+  console.log(req.headers);
+  if (!hed) {
+    console.log("No Header");
 
-const mid2= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid2")
-    next()
-}
+    res.send("request is missing a mandatory headerWe require header");
+  } else {
+    console.log("MW is working");
+    next();
+  }
+};
 
-const mid3= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid3")
-    next()
-}
-
-const mid4= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid4")
-    next()
-}
-
-module.exports.mid1= mid1
-module.exports.mid2= mid2
-module.exports.mid3= mid3
-module.exports.mid4= mid4
+exports.checkFree = async (req, res, next) => {
+  const isFree = req.headers.isfreeappuser;
+  const data = req.body;
+  console.log(req.headers);
+  if (isFree == true) {
+    console.log("header is true");
+    const person = await userModel.findById(data.userId);
+    next();
+  } else {
+    console.log("header is false");
+    res.send({});
+    next();
+  }
+};
