@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
     lastName: String,
     mobile: {
       type: String,
-      required: true,
+      required: true
     },
     emailId: String,
     password: String,
@@ -16,9 +16,9 @@ const userSchema = new mongoose.Schema(
     },
     isDeleted: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    age: Number,
+    age: Number
   },
   { timestamps: true }
 );
